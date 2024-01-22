@@ -322,7 +322,6 @@ def report_detail(request, report_id):
     
     return render(request, 'report_detail.html', {'report': report})
 
-
 @user_passes_test(is_admin)
 def report_list(request):
     reports = Report.objects.all()
@@ -344,6 +343,7 @@ def unban_user(request):
         try:
             user = User.objects.get(id=user_id)
             user.is_banned = False
+            user.strikes = 0
             user.save()
         except User.DoesNotExist:
             pass

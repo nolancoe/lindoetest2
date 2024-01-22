@@ -12,7 +12,7 @@
           <ul class="list-group">
             {% for user in banned_users %}
             <li class="list-group-item">
-                {{ user.username }}
+              <a href="{% url 'other_user_profile' username=user.username %}"class="link-underline-dark link-light link-offset-1 link-underline-opacity-25 link-underline-opacity-0-hover">{{ user.username }}</a>
                 <form method="post" class="d-inline" action="{% url 'unban_user' %}">
                     {% csrf_token %}
                     <input type="hidden" name="user_id" value="{{ user.id }}">

@@ -6,7 +6,7 @@ import pytz
 
 class ProfileForm(forms.ModelForm):
 
-    timezone = forms.ChoiceField(choices=[(tz, tz) for tz in pytz.all_timezones], label='Timezone')
+    timezone = forms.ChoiceField(choices=[(tz, tz) for tz in pytz.all_timezones], label='Timezone', widget=forms.Select)
 
     class Meta:
         model = Profile
@@ -24,6 +24,7 @@ class ProfileForm(forms.ModelForm):
             'gamertag': forms.TextInput(attrs={'placeholder': 'Xbox Gamertag'}),
             'psnid': forms.TextInput(attrs={'placeholder': 'Playstation Network ID'}),
             'profile_picture': forms.FileInput(attrs={'accept': 'image/*'}),
+
 
         }
 

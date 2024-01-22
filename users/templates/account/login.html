@@ -25,12 +25,10 @@
 
         {% get_providers as socialaccount_providers %}
 
-
         <p>{% blocktrans with site.name as site_name %}Please sign in with your Sweaty Games credentials.
         {% endblocktrans %}</p>
 
         {% include "socialaccount/snippets/login_extra.html" %}
-
 
         <form class="login" method="POST" action="{% url 'account_login' %}">
           {% csrf_token %}
