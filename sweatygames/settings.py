@@ -117,7 +117,7 @@ AUTHENTICATION_BACKENDS = (
 
 )
 
-EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 
 
 ACCOUNT_EMAIL_REQUIRED = True
@@ -126,7 +126,9 @@ ACCOUNT_USERNAME_REQUIRED = True
 
 
 ANYMAIL = {
-    "SENDINBLUE_API_KEY": "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",
+    "MAILGUN_API_KEY": "be5dc88f82770d5c3b90ff2be703d2ff-063062da-c188dee7",
+    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3",
+    "MAILGUN_SENDER_DOMAIN": "mail1.example.com",
 }
 
 DEFAULT_FROM_EMAIL = 'Sweaty Games <nolancoe@live.com>'
