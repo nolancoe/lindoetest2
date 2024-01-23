@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center mx-auto">
+    <div class="col-md-6 mx-auto">
+      <div class="card border-5 border-primary mt-5 rounded-4 custom-shadow">
+        <div class="card-header border-primary">
+          <h1 class="card-title text-center">Edit Profile</h1>
+        </div>
+        <div class="card-body text-center">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div>
+            {% if request.user.profile_picture %}
+              <img src="{{ request.user.profile_picture.url }}" alt="{{ request.user.username }} Profile Picture" class="img-fluid rounded-circle mb-3" style="object-fit: cover; width: 150px; height: 150px;">
+            {% else %}
+              <div>
+                <img src="\media\sweatygameslogo1.png" alt="{{ request.user.username }} Profile Picture" class="img-fluid rounded-circle mb-3" style="object-fit: cover; width: 150px; height: 150px;">
+              </div>
+            {% endif %}
+            </div>
+
+          <div class="mb-3 text-center">
+
+            
+
+            {{ form.profile_picture.label_tag }}
+            {{ form.profile_picture }}
+          </div>
+          <div>
+            <label for="username">Username:</label>
+          </div>
+          <div class="mb-3">
+            
+            {{ form.username }}
+          </div>
+          <div>
+            <label for="first_name">First Name:</label>
+          </div>
+          <div class="mb-3">
+          
+            {{ form.first_name }}
+          </div>
+          <div>
+            <label for="last_name">Last Name:</label>
+          </div>
+          <div class="mb-3">
+            
+            {{ form.last_name }}
+          </div>
+
+          <!-- Social Links Fields -->
+          <div>
+            <label for="twitter_link">Twitter:</label>
+          </div>  
+          <div class="mb-3">
+            {{ form.twitter_link }}
+          </div>
+          <div>
+            <label for="youtube_link">YouTube:</label>
+          </div>
+          <div class="mb-3">
+            
+            {{ form.youtube_link }}
+          </div>
+          <div>
+            <label for="activision_id">Activision ID:</label>
+          </div>
+          <div class="mb-3">
+            
+            {{ form.activision_id }}
+          </div>
+          <div>
+            <label for="gamertag">XBL Gamertag:</label>
+          </div>
+          <div class="mb-3">
+            
+            {{ form.gamertag }}
+          </div>
+          <div>
+            <label for="psnid">PSN ID:</label>
+          </div>
+          <div class="mb-3">
+            
+            {{ form.psnid }}
+          </div>
+          <div>
+            {{ form.birthday.label_tag }}
+          </div>
+          <div class="mb-3">
+            {{ form.birthday }}
+          </div>
+          
+          <div>
+            {{ form.timezone.label_tag }}
+          </div>
+          <div class="mb-3">
+            {{ form.timezone }}
+          </div>
+          <div class="mb-3">
+            {{ form.country.label_tag }}
+            {{ form.country }}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block custom-shadow-small rounded-3">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</br></br>
+{% endblock %}
