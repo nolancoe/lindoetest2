@@ -545,7 +545,7 @@
                                 
                                 - <img src="{{ past_match.team1.logo.url }}" alt="{{ match.team1.name }} Logo" width="25" height="25" class="img-fluid fixed-logo-small">  VS.  <img src="{{ past_match.team2.logo.url }}" alt="{{ past_match.team2.name }} Logo" width="25" height="25" class="img-fluid fixed-logo-small"> -
                                 
-                                {% if matpast_matchh.team2_result == "win" %}
+                                {% if past_match.team2_result == "win" %}
                                   <span class="mt-3 text-center text-success">W</span>
                                 {% elif past_match.team2_result == "loss" %}
                                   <span class="mt-3 text-center text-danger">L</span>
