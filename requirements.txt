@@ -27,7 +27,7 @@ idna==3.4
 ms-cv==0.1.1
 multidict==6.0.4
 oauthlib==3.2.2
-Pillow==10.0.0
+Pillow
 pycparser==2.21
 pydantic
 pydantic_core
