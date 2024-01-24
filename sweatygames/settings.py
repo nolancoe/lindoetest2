@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-y-t1^@$njd5$mf0sino6oclos9(@^+2d&se45_#=hexpo6=ujd'
+export twitch_secret=lh2xod4ky76lslevhtn22tspbc3hgm
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -139,7 +140,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'Steam': {
             'SERVERS': [
                 {
-                    'client_id': '3FD78E9A303947AD32F4BB487FFCC840',
+                    'client_id': 'steam_client_id',
                 },
             ],
         },
@@ -148,7 +149,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'REGION': 'us',
         'SERVERS': [
             {
-                'client_id': '3587dd4eaf5c4e5e9dfbd631e9a1e11f',
+                'client_id': 'battlenet_client_id',
                 'secret': 'HIL3w6jQivuRZbsT3Qw8PHLQmtJFXrz9',
                 'redirect_uris': ['http://localhost:8000/accounts/battlenet/login/callback/'],
             },
@@ -156,8 +157,8 @@ SOCIALACCOUNT_PROVIDERS = {
     },
     'discord': {
         'DISCORD': {
-            'client_id': '1179189466389299321',
-            'secret': 'f9yqlUbU5FReA4yUe7tH-zCxxEkxklgH',
+            'client_id': 'discord_client_id',
+            'secret': 'discord_secret',
             'SCOPE': ['identify', 'email'],  # Adjust scopes as needed
             'METHOD': 'oauth2',
             'redirect_uris': ['http://localhost:8000/accounts/discord/login/callback/'],
@@ -165,8 +166,8 @@ SOCIALACCOUNT_PROVIDERS = {
     },
     'twitch': {
         'METHOD': 'oauth2',
-        'CLIENT_ID': '7zbtqqijo5f659txd0hdd8ef9u0qtq',
-        'CLIENT_SECRET': 'lh2xod4ky76lslevhtn22tspbc3hgm',
+        'CLIENT_ID': 'twitch_client_id',
+        'CLIENT_SECRET': 'twitch_secret',
         'AUTH_PARAMS': {'access_type': 'online'},
         'INIT_PARAMS': {'redirect_uri': 'http://localhost:8000/accounts/twitch/login/callback/'},
     },
