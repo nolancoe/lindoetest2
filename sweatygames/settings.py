@@ -24,7 +24,7 @@ SECRET_KEY = 'django_secret'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '45.33.29.74', 'sweatygames.pro']
 
