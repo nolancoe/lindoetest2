@@ -129,7 +129,7 @@ ANYMAIL = {
     "SENDINBLUE_API_KEY": os.environ.get('sendinblueapi'),
 }
 
-DEFAULT_FROM_EMAIL = 'Sweaty Games <nolancoe@live.com>'
+DEFAULT_FROM_EMAIL = 'Sweaty Games <nolan@sweatygmaes.pro>'
 
 ACCOUNT_SIGNUP_REDIRECT_URL = '/request_verification'
 
