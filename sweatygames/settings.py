@@ -150,7 +150,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'SERVERS': [
             {
                 'client_id': 'battlenet_client_id',
-                'secret': 'HIL3w6jQivuRZbsT3Qw8PHLQmtJFXrz9',
+                'secret': 'battlenet_secret',
                 'redirect_uris': ['http://localhost:8000/accounts/battlenet/login/callback/'],
             },
         ],
