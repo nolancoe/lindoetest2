@@ -111,7 +111,7 @@ def permission_denied_view(request):
 
 def simulate_bad_request(request):
     # Simulate a 400 Bad Request response
-    return HttpResponseBadRequest("This is a simulated 400 Bad Request.")
+    return HttpResponseBadRequest
 
 def handler400(request, exception):
     return render(request, '400.html', {}, status=400)
