@@ -16,8 +16,9 @@ urlpatterns = [
     path('matches_picker/', views.matches_picker, name='matches_picker'),
     path('results_picker/', views.results_picker, name='results_picker'),
     path("403/", views.permission_denied_view, name='permission_denied'),
+    path('simulate_bad_request/', simulate_bad_request, name='simulate_bad_request'),
     
 
 ]
-handler500 = 'core.views.handler500'
+
 

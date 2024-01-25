@@ -109,3 +109,7 @@ def results_picker(request):
 def permission_denied_view(request):
     raise PermissionDenied
 
+def simulate_bad_request(request):
+    # Simulate a 400 Bad Request response
+    return HttpResponseBadRequest("This is a simulated 400 Bad Request.")
+
