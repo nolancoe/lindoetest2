@@ -108,5 +108,7 @@ def simulate_bad_request(request):
     # Simulate a 400 Bad Request response
     return HttpResponseBadRequest("This is a simulated 400 Bad Request.")
 
-def handler500(request):
-    return render(request, '500.html', status=500)
+def handler500(request, exception, template_name="500.html"):
+    response = render_to_response(template_name)
+    response.status_code = 500
+    return response
