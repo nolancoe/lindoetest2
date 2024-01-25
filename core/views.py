@@ -103,12 +103,3 @@ def results_picker(request):
         check_user_eligibility(current_user)
 
     return render(request, 'results_picker.html')
-
-
-
-def permission_denied_view(request):
-    raise PermissionDenied
-
-def simulate_bad_request(request):
-    # Simulate a server error (500)
-    raise Exception("This is a simulated server error.")
