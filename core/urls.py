@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from core.views import simulate_bad_request
 from django.views.generic import TemplateView
 from django.urls import re_path
 from django.conf.urls import handler404, handler500, handler403, handler401
@@ -16,7 +15,6 @@ urlpatterns = [
     path('challenges_picker/', views.challenges_picker, name='challenges_picker'),
     path('matches_picker/', views.matches_picker, name='matches_picker'),
     path('results_picker/', views.results_picker, name='results_picker'),
-    path('simulate_bad_request/', simulate_bad_request, name='simulate_bad_request'),
 
     handler500 = 'core.views.handler500'
 
