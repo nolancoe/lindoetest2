@@ -3,6 +3,7 @@ from matches.models import Match, DirectChallenge
 from django.utils import timezone
 from teams.models import Team
 from django.http import HttpResponseBadRequest
+from django.core.exceptions import PermissionDenied
 
 
 
@@ -103,6 +104,10 @@ def results_picker(request):
 
     return render(request, 'results_picker.html')
 
+
+
+def permission_denied_view(request):
+    raise PermissionDenied
 
 
 def handler500(request, exception, template_name="500.html"):
