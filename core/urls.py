@@ -4,6 +4,8 @@ from django.views.generic import TemplateView
 from django.urls import re_path
 from django.conf.urls import handler404, handler500, handler403, handler400
 
+handler400 = 'core.views.handler400'
+
 urlpatterns = [
     path('', views.home_view, name='home'),
     path('ladders/', views.ladders, name='ladders'),
@@ -17,7 +19,6 @@ urlpatterns = [
     path('results_picker/', views.results_picker, name='results_picker'),
     path("403/", views.permission_denied_view, name='permission_denied'),
     path('simulate_bad_request/', views.simulate_bad_request, name='simulate_bad_request'),
-    handler400 = 'core.views.handler400'
 
 ]
 
