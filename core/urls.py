@@ -4,7 +4,6 @@ from django.views.generic import TemplateView
 from django.urls import re_path
 from django.conf.urls import handler404, handler500, handler403, handler400
 
-handler400 = 'core.views.handler400'
 
 urlpatterns = [
     path('', views.home_view, name='home'),
