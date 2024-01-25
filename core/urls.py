@@ -16,7 +16,7 @@ urlpatterns = [
     path('matches_picker/', views.matches_picker, name='matches_picker'),
     path('results_picker/', views.results_picker, name='results_picker'),
 
-    handler500 = 'core.views.handler500'
+    
 
 ]
-
+handler500 = 'core.views.handler500'
