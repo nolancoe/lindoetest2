@@ -169,7 +169,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'CLIENT_ID': 'twitch_client_id',
         'CLIENT_SECRET': 'twitch_secret',
         'AUTH_PARAMS': {'access_type': 'online'},
-        'INIT_PARAMS': {'redirect_uri': 'http://localhost:8000/accounts/twitch/login/callback/'},
+        'INIT_PARAMS': {'redirect_uri': 'https://sweatygames.pro/accounts/twitch/login/callback/'},
     },
 
 }
