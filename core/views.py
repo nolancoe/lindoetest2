@@ -115,4 +115,4 @@ def simulate_bad_request(request):
 
 
 def handler400(request, exception):
-    return render(request, '401.html', status=400)
+    return render(request, '400.html', status=400)
