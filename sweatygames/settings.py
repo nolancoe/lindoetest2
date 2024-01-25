@@ -66,6 +66,7 @@ SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'core.middleware.PrintHeadersMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,7 +76,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'users.custom_middleware.BanCheckMiddleware',
     'users.custom_middleware.RestrictAdminMiddleware',
-    'core.middleware.PrintHeadersMiddleware',
+    
     
 ]
 
