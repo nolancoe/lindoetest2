@@ -153,7 +153,7 @@ SOCIALACCOUNT_PROVIDERS = {
             {
                 'client_id': 'battlenet_client_id',
                 'secret': 'battlenet_secret',
-                'redirect_uris': ['http://localhost:8000/accounts/battlenet/login/callback/'],
+                'redirect_uris': ['https://sweatygames.pro/accounts/discord/login/callback/'],
             },
         ],
     },
