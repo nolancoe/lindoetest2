@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from django.views.generic import TemplateView
 from django.urls import re_path
-from django.conf.urls import handler404, handler500, handler403, handler401
+from django.conf.urls import handler404, handler500
 
 urlpatterns = [
     path('', views.home_view, name='home'),
