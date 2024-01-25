@@ -17,9 +17,8 @@ urlpatterns = [
     path('results_picker/', views.results_picker, name='results_picker'),
     path("403/", views.permission_denied_view, name='permission_denied'),
     path('simulate_bad_request/', views.simulate_bad_request, name='simulate_bad_request'),
-    
+    handler400 = 'core.views.handler400',
 
 ]
 
 
-handler400 = 'core.views.handler400'
