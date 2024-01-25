@@ -157,8 +157,8 @@ SOCIALACCOUNT_PROVIDERS = {
     },
     'discord': {
         'DISCORD': {
-            'client_id': 'discord_client_id',
-            'secret': 'discord_secret',
+            'discord_client_id': os.environ.get('discord_client_id'),
+            'discord_secret': os.environ.get('discord_secret'),
             'SCOPE': ['identify', 'email'],  # Adjust scopes as needed
             'METHOD': 'oauth2',
             'redirect_uris': ['https://sweatygames.pro/accounts/discord/login/callback/'],
