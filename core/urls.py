@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from core.views import simulate_bad_request
 from django.views.generic import TemplateView
 from django.urls import re_path
 from django.conf.urls import handler404, handler500, handler403, handler401
