@@ -21,4 +21,3 @@ urlpatterns = [
 ]
 handler500 = 'core.views.handler500'
 
-handler403 = 'response_error_handler'
