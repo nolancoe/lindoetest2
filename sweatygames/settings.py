@@ -75,6 +75,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'users.custom_middleware.BanCheckMiddleware',
     'users.custom_middleware.RestrictAdminMiddleware',
+    'core.middleware.PrintHeadersMiddleware',
     
 ]
 
