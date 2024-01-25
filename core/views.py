@@ -110,6 +110,5 @@ def permission_denied_view(request):
     raise PermissionDenied
 
 def simulate_bad_request(request):
-    # Simulate a 400 Bad Request response
     # Simulate a server error (500)
     raise Exception("This is a simulated server error.")
