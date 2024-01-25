@@ -161,7 +161,7 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': 'discord_secret',
             'SCOPE': ['identify', 'email'],  # Adjust scopes as needed
             'METHOD': 'oauth2',
-            'redirect_uris': ['http://localhost:8000/accounts/discord/login/callback/'],
+            'redirect_uris': ['https://sweatygames.pro/accounts/discord/login/callback/'],
         },
     },
     'twitch': {
@@ -236,3 +236,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
