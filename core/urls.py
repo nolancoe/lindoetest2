@@ -22,4 +22,4 @@ urlpatterns = [
 ]
 
 
-handler400 = 'core.views.handler40'
+handler400 = 'core.views.handler400'
