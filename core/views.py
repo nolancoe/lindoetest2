@@ -2,6 +2,7 @@ from django.shortcuts import render
 from matches.models import Match, DirectChallenge
 from django.utils import timezone
 from teams.models import Team
+from django.http import HttpResponseBadRequest
 
 
 
@@ -101,3 +102,8 @@ def results_picker(request):
         check_user_eligibility(current_user)
 
     return render(request, 'results_picker.html')
+
+
+def simulate_bad_request(request):
+    # Simulate a 400 Bad Request response
+    return HttpResponseBadRequest("This is a simulated 400 Bad Request.")
