@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django_secret'
 
-handler400 = 'core.views.handler400'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -240,5 +240,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+handler400 = 'core.views.handler400'
 
