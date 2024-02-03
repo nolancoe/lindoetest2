@@ -539,6 +539,8 @@ class CustomConfirmEmailView(AllAuthConfirmEmailView):
         # user.is_active = True
         # user.save()
 
+        print("Custom Confirm Email View is being executed!")
+
         #beta testing badge
         badge = Badge.objects.get(id=1)  # Get the badge you want to assign
         self.request.user.badges.add(badge)  # Assign the badge to the us
