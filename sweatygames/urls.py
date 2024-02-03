@@ -36,8 +36,9 @@ urlpatterns = [
     path('unban-user/', unban_user, name='unban_user'),
 
     #Allauth urls
-    path('accounts/', include('allauth.urls')),
     path('accounts/confirm-email/<str:key>/', CustomConfirmEmailView, name='account_confirm_email'),
+    path('accounts/', include('allauth.urls')),
+    
 
     path('request_verification/', request_verification, name='request_verification'),
     path('resend-verification/', resend_verification, name='resend_verification'),
