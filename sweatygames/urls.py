@@ -35,13 +35,13 @@ urlpatterns = [
     path('banned-users/', banned_users_list, name='banned_users_list'),
     path('unban-user/', unban_user, name='unban_user'),
 
+    #Allauth urls
     path('accounts/', include('allauth.urls')),
+    path('accounts/confirm-email/<str:key>/', email_verified_required(CustomConfirmEmailView.as_view()), name='account_confirm_email'),
 
     path('request_verification/', request_verification, name='request_verification'),
     path('resend-verification/', resend_verification, name='resend_verification'),
 
-
-    
 
     path('customize_profile/', customize_profile_view, name='customize_profile'),
     path('redirect_after_steam_login/', redirect_after_steam_login, name='redirect_after_steam_login'),
