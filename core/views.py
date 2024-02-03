@@ -15,6 +15,7 @@ def home_view(request):
     if request.user.is_authenticated:
         current_user = request.user
         check_user_eligibility(current_user)
+        print("THEY DO PRINT!")
 
     return render(request, 'home.html', {'matches': matches, 'now' : now, 'direct_challenges': direct_challenges})
 
