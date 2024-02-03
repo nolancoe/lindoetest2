@@ -4,6 +4,7 @@ from django.utils import timezone
 from teams.models import Team
 from django.http import HttpResponseBadRequest
 from django.core.exceptions import PermissionDenied
+import logging
 
 
 
@@ -15,7 +16,7 @@ def home_view(request):
     if request.user.is_authenticated:
         current_user = request.user
         check_user_eligibility(current_user)
-        print("THEY DO PRINT!")
+        logging.info("IT DID WORK NICE")
 
     return render(request, 'home.html', {'matches': matches, 'now' : now, 'direct_challenges': direct_challenges})
 
