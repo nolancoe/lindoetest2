@@ -105,8 +105,9 @@
             {{ form.country }}
           </div>
 
-          <a class="link-underline-dark link-light link-offset-1 link-underline-opacity-25 link-underline-opacity-0-hover" href="{% url 'account_reset_password' %}">Change Password</a>
-
+          <div class="mb-3">
+            <a class="link-underline-dark link-light link-offset-1 link-underline-opacity-25 link-underline-opacity-0-hover" href="{% url 'account_reset_password' %}">Change Password</a>
+          </div>
           <button type="submit" class="btn btn-primary btn-block custom-shadow-small rounded-3">Save Changes</button>
         </form>
       </div>
