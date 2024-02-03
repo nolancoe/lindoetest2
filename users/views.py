@@ -25,6 +25,7 @@ from django.db.models import Q
 from core.views import check_players_eligibility, check_user_eligibility
 from duos_matches.models import DuosMatch
 from itertools import chain
+from allauth.account import app_settings
 
 from allauth.account.views import ConfirmEmailView as AllAuthConfirmEmailView
 
