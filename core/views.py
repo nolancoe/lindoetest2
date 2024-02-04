@@ -14,9 +14,12 @@ def home_view(request):
     now = timezone.now()
 
     if request.user.is_authenticated:
-        current_user = request.user
-        check_user_eligibility(current_user)
-        logging.info("IT DID WORK NICE")
+        badge_id_to_check = 1  # ID of the badge you want to check
+        badge = Badge.objects.get(id=badge_id_to_check)
+
+        # Check if the user already has the badge
+        if not current_user.badges.filter(id=badge_id_to_check).exists():
+            current_user.badges.add(badge)  # Assign the badge to the user
 
     return render(request, 'home.html', {'matches': matches, 'now' : now, 'direct_challenges': direct_challenges})
 
