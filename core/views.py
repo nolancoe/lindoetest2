@@ -5,7 +5,7 @@ from teams.models import Team
 from django.http import HttpResponseBadRequest
 from django.core.exceptions import PermissionDenied
 import logging
-
+from users.models import Badge
 
 
 def home_view(request):
