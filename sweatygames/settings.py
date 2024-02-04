@@ -126,7 +126,7 @@ EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
-ACCOUNT_EMAIL_CONFIRMATION = 'users.views.CustomConfirmEmailView'
+
 
 
 
