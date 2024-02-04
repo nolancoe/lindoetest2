@@ -18,8 +18,8 @@ def home_view(request):
         badge = Badge.objects.get(id=badge_id_to_check)
 
         # Check if the user already has the badge
-        if not current_user.badges.filter(id=badge_id_to_check).exists():
-            current_user.badges.add(badge)  # Assign the badge to the user
+        if not request.user.badges.filter(id=badge_id_to_check).exists():
+            request.user.badges.add(badge)  # Assign the badge to the user
 
     return render(request, 'home.html', {'matches': matches, 'now' : now, 'direct_challenges': direct_challenges})
 
