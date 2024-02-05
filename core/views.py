@@ -17,9 +17,19 @@ def home_view(request):
         badge_id_to_check = 1  # ID of the badge you want to check
         badge = Badge.objects.get(id=badge_id_to_check)
 
+        connected_badge_id = 18
+        connected_badge = Badge.objects.get(id=connected_badge_id)
+
+
         # Check if the user already has the badge
         if not request.user.badges.filter(id=badge_id_to_check).exists():
             request.user.badges.add(badge)  # Assign the badge to the user
+
+        has_social_account = SocialAccount.objects.filter(user=request.user).exists()
+
+        if not request.user.badges.filter(id=connected_badge_id).exists():
+            if has_social_account:
+                request.user.badges.add(connected_badge)  # Assign the badge to the user
 
     return render(request, 'home.html', {'matches': matches, 'now' : now, 'direct_challenges': direct_challenges})
 
