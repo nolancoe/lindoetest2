@@ -6,6 +6,7 @@ from django.http import HttpResponseBadRequest
 from django.core.exceptions import PermissionDenied
 import logging
 from users.models import Badge
+from allauth.socialaccount.models import SocialAccount
 
 
 def home_view(request):
