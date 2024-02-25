@@ -1,7 +1,7 @@
 # forms.py
 from django import forms
 from .models import DuosChallenge, DuosMatch, DuosMatchResult, DuosDisputeProof, DuosDirectChallenge, DuosMatchSupport, SupportCategory
-from django.utils import timezone
+from django.utils import timezone as dj_timezone
 from users.models import Profile
 from django.core.exceptions import ValidationError
 import pytz
@@ -34,24 +34,22 @@ class DuosChallengeForm(forms.ModelForm):
         return cleaned_data
 
     def clean_scheduled_date(self):
-        # Fetch the scheduled_date from the form input
         scheduled_date = self.cleaned_data.get('scheduled_date')
-
         if scheduled_date:
-            # Assuming self.user.timezone contains a string like 'Europe/London'
-            user_timezone_str = self.user.timezone
+            # Since self.user.timezone is already a timezone object, we can use it directly
+            user_timezone = self.user.timezone
 
-            # Convert the string timezone into a pytz timezone object
-            user_timezone = pytz.timezone(user_timezone_str)
-
-            # Assuming the input datetime is naive (has no timezone info) and is in the user's local timezone
-            # First, make the datetime object timezone-aware in the user's local timezone
-            local_aware_datetime = user_timezone.localize(scheduled_date)
-
+            # Check if scheduled_date is naive (has no timezone info)
+            if dj_timezone.is_naive(scheduled_date):
+                # Make the datetime object timezone-aware in the user's local timezone
+                local_aware_datetime = dj_timezone.make_aware(scheduled_date, user_timezone)
+            else:
+                # If already aware, convert it to the user's timezone without re-localization
+                local_aware_datetime = scheduled_date.astimezone(user_timezone)
+            
             # Then, convert it to UTC
-            utc_aware_datetime = local_aware_datetime.astimezone(pytz.utc)
-
-            # Return the UTC datetime object
+            utc_aware_datetime = local_aware_datetime.astimezone(dj_timezone.utc)
+            
             return utc_aware_datetime
 
 
