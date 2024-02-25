@@ -657,6 +657,7 @@ def dispute_details(request, dispute_id):
         # Update the match instance with the resolved results
         match.team1_result = team1_result
         match.team2_result = team2_result
+        match.match_disputed = False
         match.match_completed = True
         match.save()
 
