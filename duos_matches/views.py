@@ -152,7 +152,7 @@ def create_duos_challenge(request):
                             badge = Badge.objects.get(id=badge_id)  # Get the badge you want to assign
                             request.user.badges.add(badge)  # Assign the badge to the user
 
-                        return redirect('challenges')   
+                        return redirect('duos_challenges')   
     else:
         form = DuosChallengeForm(team=request.user.current_duos_team)
     return render(request, 'create_duos_challenge.html', {'form': form})
