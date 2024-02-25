@@ -4,6 +4,7 @@ from .models import DuosChallenge, DuosMatch, DuosMatchResult, DuosDisputeProof,
 from django.utils import timezone
 from users.models import Profile
 from django.core.exceptions import ValidationError
+import pytz
 
 
 class DuosChallengeForm(forms.ModelForm):
@@ -33,19 +34,25 @@ class DuosChallengeForm(forms.ModelForm):
         return cleaned_data
 
     def clean_scheduled_date(self):
+        # Fetch the scheduled_date from the form input
         scheduled_date = self.cleaned_data.get('scheduled_date')
+
         if scheduled_date:
-            # Check if the datetime object is aware
-            if timezone.is_aware(scheduled_date):
-                # If it's already aware, directly convert to UTC without using utcoffset
-                utc_scheduled_date = scheduled_date.astimezone(timezone.utc)
-            else:
-                # If it's naive, assume it's in the user's timezone and make it aware
-                user_timezone = self.user.timezone  # Ensure 'user' is available in the form
-                aware_scheduled_date = user_timezone.localize(scheduled_date)
-                # Then convert to UTC
-                utc_scheduled_date = aware_scheduled_date.astimezone(timezone.utc)
-            return utc_scheduled_date
+            # Assuming self.user.timezone contains a string like 'Europe/London'
+            user_timezone_str = self.user.timezone
+
+            # Convert the string timezone into a pytz timezone object
+            user_timezone = pytz.timezone(user_timezone_str)
+
+            # Assuming the input datetime is naive (has no timezone info) and is in the user's local timezone
+            # First, make the datetime object timezone-aware in the user's local timezone
+            local_aware_datetime = user_timezone.localize(scheduled_date)
+
+            # Then, convert it to UTC
+            utc_aware_datetime = local_aware_datetime.astimezone(pytz.utc)
+
+            # Return the UTC datetime object
+            return utc_aware_datetime
 
 
 class DuosDirectChallengeForm(forms.ModelForm):
