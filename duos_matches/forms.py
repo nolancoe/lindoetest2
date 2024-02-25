@@ -33,13 +33,19 @@ class DuosChallengeForm(forms.ModelForm):
         return cleaned_data
 
     def clean_scheduled_date(self):
-        scheduled_date = self.cleaned_data.get('scheduled_date')
-        if scheduled_date:
-            # Convert scheduled date to UTC
-            user_timezone = self.user.timezone  # Make sure 'user' is available in the form
-            utc_offset = user_timezone.utcoffset(scheduled_date).total_seconds()
-            utc_scheduled_date = scheduled_date - timezone.timedelta(seconds=utc_offset)
-            return utc_scheduled_date
+    scheduled_date = self.cleaned_data.get('scheduled_date')
+    if scheduled_date:
+        # Check if the datetime object is aware
+        if timezone.is_aware(scheduled_date):
+            # If it's already aware, directly convert to UTC without using utcoffset
+            utc_scheduled_date = scheduled_date.astimezone(timezone.utc)
+        else:
+            # If it's naive, assume it's in the user's timezone and make it aware
+            user_timezone = self.user.timezone  # Ensure 'user' is available in the form
+            aware_scheduled_date = user_timezone.localize(scheduled_date)
+            # Then convert to UTC
+            utc_scheduled_date = aware_scheduled_date.astimezone(timezone.utc)
+        return utc_scheduled_date
 
 
 class DuosDirectChallengeForm(forms.ModelForm):
