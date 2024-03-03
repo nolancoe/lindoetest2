@@ -37,10 +37,15 @@ class DuosChallengeForm(forms.ModelForm):
     def clean_scheduled_date(self):
         scheduled_date = self.cleaned_data.get('scheduled_date')
         if scheduled_date:
-            # Convert scheduled date to UTC
-            user_timezone = self.user.timezone  # Make sure 'user' is available in the form
-            utc_offset = user_timezone.utcoffset(scheduled_date).total_seconds()
-            utc_scheduled_date = scheduled_date - timezone.timedelta(seconds=utc_offset)
+            # Ensure 'user' is available in the form
+            user_timezone = pytz.timezone(self.user.timezone)
+
+            # Check if scheduled_date is timezone aware and make it naive
+            if scheduled_date.tzinfo is not None and scheduled_date.tzinfo.utcoffset(scheduled_date) is not None:
+                scheduled_date = scheduled_date.astimezone(user_timezone).replace(tzinfo=None)
+
+            # Then convert scheduled_date to UTC
+            utc_scheduled_date = timezone.make_aware(scheduled_date, timezone=user_timezone).astimezone(pytz.utc)
             return utc_scheduled_date
 
 
