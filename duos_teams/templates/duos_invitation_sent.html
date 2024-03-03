@@ -12,7 +12,7 @@
           <div class="card-body text-center">
             <span>You have sent this player an invite to join {{ user.current_duos_team.name }}</span>
             <div class="text-center mt-3"> 
-              <a class="btn btn-primary custom-shadow-small rounded-3" href="{% url 'team_detail' team_id=request.user.current_duos_team.id %}">My Team</a>
+              <a class="btn btn-primary custom-shadow-small rounded-3" href="{% url 'duos_team_detail' team_id=request.user.current_duos_team.id %}">My Team</a>
             </div>
           </div>
         </div>
