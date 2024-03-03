@@ -34,10 +34,12 @@ class DuosChallengeForm(forms.ModelForm):
         return cleaned_data
 
     def clean_scheduled_date(self):
+        print(self.user.timezone, type(self.user.timezone))
         scheduled_date = self.cleaned_data.get('scheduled_date')
         if scheduled_date:
             # Get the user's timezone from the profile
             user_timezone = pytz.timezone(self.user.timezone)
+            
 
             # Make the scheduled_date aware by setting the user's timezone
             user_local_datetime = user_timezone.localize(scheduled_date)
