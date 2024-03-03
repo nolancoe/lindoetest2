@@ -1,7 +1,7 @@
 # forms.py
 from django import forms
 from .models import DuosChallenge, DuosMatch, DuosMatchResult, DuosDisputeProof, DuosDirectChallenge, DuosMatchSupport, SupportCategory
-from django.utils import timezone as dj_timezone
+from django.utils import timezone
 from users.models import Profile
 from django.core.exceptions import ValidationError
 import pytz
@@ -36,10 +36,14 @@ class DuosChallengeForm(forms.ModelForm):
     def clean_scheduled_date(self):
         scheduled_date = self.cleaned_data.get('scheduled_date')
         if scheduled_date:
-            # Convert scheduled date to UTC
-            user_timezone = self.user.timezone  # Make sure 'user' is available in the form
-            utc_offset = user_timezone.utcoffset(scheduled_date).total_seconds()
-            utc_scheduled_date = scheduled_date - timezone.timedelta(seconds=utc_offset)
+            # Get the user's timezone from the profile
+            user_timezone = pytz.timezone(self.user.timezone)
+
+            # Make the scheduled_date aware by setting the user's timezone
+            user_local_datetime = user_timezone.localize(scheduled_date)
+
+            # Convert the datetime to UTC
+            utc_scheduled_date = user_local_datetime.astimezone(pytz.utc)
             return utc_scheduled_date
 
 
