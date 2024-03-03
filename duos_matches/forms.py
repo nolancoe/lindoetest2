@@ -5,6 +5,7 @@ from django.utils import timezone
 from users.models import Profile
 from django.core.exceptions import ValidationError
 import pytz
+from django.utils.timezone import is_aware, make_aware, utc
 
 
 class DuosChallengeForm(forms.ModelForm):
