@@ -6,7 +6,9 @@ from users.models import Profile
 from django.core.exceptions import ValidationError
 import pytz
 from django.utils.timezone import is_aware, make_aware, utc
+import logging
 
+logger = logging.getLogger(__name__)
 
 class DuosChallengeForm(forms.ModelForm):
     search_only = forms.BooleanField(label='Search Only', required=False)
@@ -37,15 +39,28 @@ class DuosChallengeForm(forms.ModelForm):
     def clean_scheduled_date(self):
         scheduled_date = self.cleaned_data.get('scheduled_date')
         if scheduled_date:
-            user_timezone = timezone.get_default_timezone() if not self.user.timezone else pytz.timezone(str(self.user.timezone))
+            logger.debug(f"Original scheduled_date: {scheduled_date}")
             
-            # If scheduled_date is naive (which it shouldn't be coming from a form), make it aware
+            user_timezone_str = str(self.user.timezone) if self.user.timezone else str(timezone.get_default_timezone())
+            logger.debug(f"User's timezone string: {user_timezone_str}")
+            
+            user_timezone = pytz.timezone(user_timezone_str)
+            logger.debug(f"User's timezone object: {user_timezone}")
+            
             if timezone.is_naive(scheduled_date):
+                logger.debug("scheduled_date is naive, making it aware")
                 scheduled_date = timezone.make_aware(scheduled_date, user_timezone)
+            else:
+                logger.debug("scheduled_date is already aware")
             
             # Convert to UTC
             utc_scheduled_date = scheduled_date.astimezone(timezone.utc)
+            logger.debug(f"UTC scheduled_date: {utc_scheduled_date}")
+            
             return utc_scheduled_date
+        else:
+            logger.debug("scheduled_date is None")
+            return scheduled_date  # Or handle the None case as needed
 
 
 class DuosDirectChallengeForm(forms.ModelForm):
