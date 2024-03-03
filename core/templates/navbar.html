@@ -122,6 +122,12 @@
                     {% if invites.invited_user == request.user %}
                           fa-bounce
                     {% endif %}
+                  {% endfor %}
+                  
+                  {% for duos_invites in duos_invites %}
+                    {% if duos_invites.invited_user == request.user %}
+                          fa-bounce
+                    {% endif %}
                   {% endfor %}">
                 </i> Play
             </a>
