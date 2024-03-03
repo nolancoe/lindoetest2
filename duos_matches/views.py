@@ -103,7 +103,16 @@ def create_duos_challenge(request):
         
         if form.is_valid():
             scheduled_date = form.cleaned_data['scheduled_date']
-            user_timezone = request.user.timezone
+            user_timezone_str = str(request.user.timezone)
+            user_timezone = pytz.timezone(user_timezone_str)
+
+            # Convert the server's current time to the user's timezone
+            current_time_user_timezone = timezone.now().astimezone(user_timezone)
+
+            # Ensure scheduled_date is in the user's local timezone for comparison
+            scheduled_date_user_timezone = scheduled_date.astimezone(user_timezone)
+
+            time_difference = (scheduled_date_user_timezone - current_time_user_timezone).total_seconds()
 
             team = request.user.current_duos_team
             if not team.eligible:
