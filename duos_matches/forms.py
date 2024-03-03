@@ -37,9 +37,14 @@ class DuosChallengeForm(forms.ModelForm):
         print(self.user.timezone, type(self.user.timezone))
         scheduled_date = self.cleaned_data.get('scheduled_date')
         if scheduled_date:
-            # Get the user's timezone from the profile
-            user_timezone = pytz.timezone(self.user.timezone)
-            
+            # Convert the user's timezone to a string, assuming it's stored as an object with a string representation
+            user_timezone_str = str(self.user.timezone)
+            try:
+                user_timezone = pytz.timezone(user_timezone_str)
+            except Exception as e:
+                print(f"Error converting timezone: {e}")
+                # Handle the error appropriately, maybe set a default or log the issue
+                user_timezone = pytz.utc
 
             # Make the scheduled_date aware by setting the user's timezone
             user_local_datetime = user_timezone.localize(scheduled_date)
