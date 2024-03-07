@@ -107,38 +107,35 @@ def create_duos_challenge(request):
                 current_utc_time = timezone.now()
                 time_difference = (scheduled_date_utc - current_utc_time).total_seconds()
 
-                # Check if the scheduled date is at least 20 minutes in the future
-                if time_difference < 1200:  # 1200 seconds = 20 minutes
-                    form.add_error('scheduled_date', "Scheduled date must be at least 20 minutes in the future.")
+
+                selected_players = form.cleaned_data['challenge_players']
+                has_conflicts = check_conflicts(selected_players, scheduled_date_utc)
+                has_disputes = check_disputes(request, team)
+
+                if has_disputes:
+                    form.add_error(None, "Cannot create a challenge while previous matches are still disputed.")
+                elif has_conflicts:
+                    form.add_error('scheduled_date', "Cannot create a challenge that falls within an hour of your already scheduled matches or challenges.")
                 else:
-                    selected_players = form.cleaned_data['challenge_players']
-                    has_conflicts = check_conflicts(selected_players, scheduled_date_utc)
-                    has_disputes = check_disputes(request, team)
+                    challenge = form.save(commit=False)
+                    challenge.team = request.user.current_duos_team
+                    challenge.scheduled_date = scheduled_date_utc  # already in UTC
 
-                    if has_disputes:
-                        form.add_error(None, "Cannot create a challenge while previous matches are still disputed.")
-                    elif has_conflicts:
-                        form.add_error('scheduled_date', "Cannot create a challenge that falls within an hour of your already scheduled matches or challenges.")
-                    else:
-                        challenge = form.save(commit=False)
-                        challenge.team = request.user.current_duos_team
-                        challenge.scheduled_date = scheduled_date_utc  # already in UTC
+                    # Save the challenge instance to generate an ID
+                    challenge.save()
 
-                        # Save the challenge instance to generate an ID
-                        challenge.save()
+                    # Set the many-to-many relationship after the challenge has an ID
+                    challenge.challenge_players.set(selected_players)
+                    challenge.save()
 
-                        # Set the many-to-many relationship after the challenge has an ID
-                        challenge.challenge_players.set(selected_players)
-                        challenge.save()
+                    badge_id = 15
+                    has_badge = request.user.badges.filter(id=badge_id).exists()
 
-                        badge_id = 15
-                        has_badge = request.user.badges.filter(id=badge_id).exists()
+                    if not has_badge:
+                        badge = Badge.objects.get(id=badge_id)
+                        request.user.badges.add(badge)
 
-                        if not has_badge:
-                            badge = Badge.objects.get(id=badge_id)
-                            request.user.badges.add(badge)
-
-                        return redirect('challenges')
+                    return redirect('challenges')
     else:
         form = DuosChallengeForm(team=request.user.current_duos_team)
 

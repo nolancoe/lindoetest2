@@ -43,6 +43,11 @@ class DuosChallengeForm(forms.ModelForm):
             # Make sure scheduled_date is timezone-aware in the user's timezone
             if not scheduled_date.tzinfo:
                 raise forms.ValidationError('The scheduled date must be timezone-aware.')
+
+            current_time_user_timezone = timezone.now().astimezone(user_timezone)
+
+            if (scheduled_date - current_time_user_timezone).total_seconds() < 1200:
+                raise forms.ValidationError("Scheduled date must be at least 20 minutes in the future.")
             
             # Convert to UTC for storage and consistency
             scheduled_date_utc = scheduled_date.astimezone(pytz.utc)
