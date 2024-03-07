@@ -37,19 +37,27 @@ class DuosChallengeForm(forms.ModelForm):
     def clean_scheduled_date(self):
         scheduled_date = self.cleaned_data.get('scheduled_date')
         if scheduled_date:
-            # self.user.timezone is already a timezone object because of TimeZoneField
+            # Assuming self.user.timezone is a pytz timezone object due to TimeZoneField
             user_timezone = self.user.timezone
 
-            # Make sure scheduled_date is timezone-aware in the user's timezone
-            if not scheduled_date.tzinfo:
-                raise forms.ValidationError('The scheduled date must be timezone-aware.')
+            # If scheduled_date does not have timezone information,
+            # it is assumed to be in the user's local timezone and made timezone-aware.
+            if scheduled_date.tzinfo is None or scheduled_date.tzinfo.utcoffset(scheduled_date) is None:
+                scheduled_date = timezone.make_aware(scheduled_date, user_timezone)
+            else:
+                # If scheduled_date has timezone info, adjust it to the user's timezone
+                scheduled_date = scheduled_date.astimezone(user_timezone)
 
+            # Get the current time in the user's timezone
             current_time_user_timezone = timezone.now().astimezone(user_timezone)
 
-            if (scheduled_date - current_time_user_timezone).total_seconds() < 1200:
-                raise forms.ValidationError("Scheduled date must be at least 20 minutes in the future.")
-            
-            # Convert to UTC for storage and consistency
+            # Calculate the time difference in seconds
+            time_difference = (scheduled_date - current_time_user_timezone).total_seconds()
+
+            if time_difference < 1200:  # 1200 seconds = 20 minutes
+                raise ValidationError("The scheduled date must be at least 20 minutes in the future.")
+
+            # After validation, convert to UTC for storage and consistency
             scheduled_date_utc = scheduled_date.astimezone(pytz.utc)
             return scheduled_date_utc
 
