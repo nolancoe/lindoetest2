@@ -37,16 +37,16 @@ class DuosChallengeForm(forms.ModelForm):
     def clean_scheduled_date(self):
         scheduled_date = self.cleaned_data.get('scheduled_date')
         if scheduled_date:
-            # Assuming 'self.user.timezone' is a string that represents a valid timezone
-            try:
-                user_timezone = pytz.timezone(self.user.timezone)
-                # Make sure scheduled_date is timezone-aware in the user's timezone
-                scheduled_date_user_tz = scheduled_date.astimezone(user_timezone)
-                # Convert to UTC for storage and consistency
-                scheduled_date_utc = scheduled_date_user_tz.astimezone(pytz.utc)
-                return scheduled_date_utc
-            except pytz.exceptions.UnknownTimeZoneError:
-                raise forms.ValidationError('Invalid timezone.')
+            # self.user.timezone is already a timezone object because of TimeZoneField
+            user_timezone = self.user.timezone
+
+            # Make sure scheduled_date is timezone-aware in the user's timezone
+            if not scheduled_date.tzinfo:
+                raise forms.ValidationError('The scheduled date must be timezone-aware.')
+            
+            # Convert to UTC for storage and consistency
+            scheduled_date_utc = scheduled_date.astimezone(pytz.utc)
+            return scheduled_date_utc
 
 
 class DuosDirectChallengeForm(forms.ModelForm):
