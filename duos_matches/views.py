@@ -88,54 +88,32 @@ def check_disputes(request, team):
 
 @login_required
 def create_duos_challenge(request):
-
     team = request.user.current_duos_team
     check_team_eligibility(team)
-
     current_user = request.user
     check_players_eligibility(current_user)
 
-    
-
     if request.method == 'POST':
-        
         form = DuosChallengeForm(request.POST, team=request.user.current_duos_team)
         form.user = request.user  # Pass the user to the form
         
         if form.is_valid():
-            scheduled_date = form.cleaned_data['scheduled_date']
-            user_timezone_str = str(request.user.timezone)
-            user_timezone = pytz.timezone(user_timezone_str)
+            scheduled_date_utc = form.cleaned_data['scheduled_date']
 
-            # Convert the server's current time to the user's timezone
-            current_time_user_timezone = timezone.now().astimezone(user_timezone)
-
-            # Ensure scheduled_date is in the user's local timezone for comparison
-            scheduled_date_user_timezone = scheduled_date.astimezone(user_timezone)
-
-            time_difference = (scheduled_date_user_timezone - current_time_user_timezone).total_seconds()
-
-            team = request.user.current_duos_team
             if not team.eligible:
                 form.add_error('scheduled_date', "Your team is not currently eligible to play in matches.")
             else:
-
-                # Convert the scheduled date to the user's timezone
-                scheduled_date_user_timezone = scheduled_date.astimezone(user_timezone)
-                
-                # Calculate the time difference in seconds
-                time_difference = (scheduled_date_user_timezone - timezone.now()).total_seconds()
+                # Compare the scheduled date in UTC with the current UTC time
+                current_utc_time = timezone.now()
+                time_difference = (scheduled_date_utc - current_utc_time).total_seconds()
 
                 # Check if the scheduled date is at least 20 minutes in the future
                 if time_difference < 1200:  # 1200 seconds = 20 minutes
                     form.add_error('scheduled_date', "Scheduled date must be at least 20 minutes in the future.")
                 else:
-
                     selected_players = form.cleaned_data['challenge_players']
-
-                    has_conflicts = check_conflicts(selected_players, scheduled_date_user_timezone)
+                    has_conflicts = check_conflicts(selected_players, scheduled_date_utc)
                     has_disputes = check_disputes(request, team)
-                    
 
                     if has_disputes:
                         form.add_error(None, "Cannot create a challenge while previous matches are still disputed.")
@@ -144,9 +122,7 @@ def create_duos_challenge(request):
                     else:
                         challenge = form.save(commit=False)
                         challenge.team = request.user.current_duos_team
-                        challenge.scheduled_date = scheduled_date_user_timezone
-
-                        selected_players = form.cleaned_data['challenge_players']
+                        challenge.scheduled_date = scheduled_date_utc  # already in UTC
 
                         # Save the challenge instance to generate an ID
                         challenge.save()
@@ -159,12 +135,13 @@ def create_duos_challenge(request):
                         has_badge = request.user.badges.filter(id=badge_id).exists()
 
                         if not has_badge:
-                            badge = Badge.objects.get(id=badge_id)  # Get the badge you want to assign
-                            request.user.badges.add(badge)  # Assign the badge to the user
+                            badge = Badge.objects.get(id=badge_id)
+                            request.user.badges.add(badge)
 
-                        return redirect('duos_challenges')   
+                        return redirect('challenges')
     else:
         form = DuosChallengeForm(team=request.user.current_duos_team)
+
     return render(request, 'create_duos_challenge.html', {'form': form})
 
 

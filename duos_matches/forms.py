@@ -35,26 +35,18 @@ class DuosChallengeForm(forms.ModelForm):
         return cleaned_data
 
     def clean_scheduled_date(self):
-        user_input_date = self.cleaned_data.get('scheduled_date')
-        if user_input_date:
-            user_timezone_str = str(self.user.timezone)  # Ensure this is correct and valid
+        scheduled_date = self.cleaned_data.get('scheduled_date')
+        if scheduled_date:
+            # Assuming 'self.user.timezone' is a string that represents a valid timezone
             try:
-                user_timezone = pytz.timezone(user_timezone_str)
-                # Ensure user_input_date is aware and in the user's timezone
-                if user_input_date.tzinfo is None or user_input_date.tzinfo.utcoffset(user_input_date) is None:
-                    user_input_date = timezone.make_aware(user_input_date, user_timezone)
-
-                current_time_user_timezone = timezone.now().astimezone(user_timezone)
-
-                # Perform the comparison in the user's timezone
-                if (user_input_date - current_time_user_timezone).total_seconds() < 1200:
-                    raise ValidationError("Scheduled date must be at least 20 minutes in the future.")
+                user_timezone = pytz.timezone(self.user.timezone)
+                # Make sure scheduled_date is timezone-aware in the user's timezone
+                scheduled_date_user_tz = scheduled_date.astimezone(user_timezone)
+                # Convert to UTC for storage and consistency
+                scheduled_date_utc = scheduled_date_user_tz.astimezone(pytz.utc)
+                return scheduled_date_utc
             except pytz.exceptions.UnknownTimeZoneError:
-                raise ValidationError('Invalid timezone.')
-
-            # After validation, convert to UTC for storage and further processing
-            user_input_date_utc = user_input_date.astimezone(pytz.utc)
-            return user_input_date_utc
+                raise forms.ValidationError('Invalid timezone.')
 
 
 class DuosDirectChallengeForm(forms.ModelForm):
