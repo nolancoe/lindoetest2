@@ -37,20 +37,24 @@ class DuosChallengeForm(forms.ModelForm):
     def clean_scheduled_date(self):
         user_input_date = self.cleaned_data.get('scheduled_date')
         if user_input_date:
-            # Assuming 'self.user.timezone' is a valid timezone string
-            user_timezone_str = str(self.user.timezone)
+            user_timezone_str = str(self.user.timezone)  # Ensure this is correct and valid
             try:
                 user_timezone = pytz.timezone(user_timezone_str)
-                user_input_date_utc = user_input_date.astimezone(pytz.utc)  # Convert to UTC
-                current_utc_time = timezone.now().astimezone(pytz.utc)
+                # Ensure user_input_date is aware and in the user's timezone
+                if user_input_date.tzinfo is None or user_input_date.tzinfo.utcoffset(user_input_date) is None:
+                    user_input_date = timezone.make_aware(user_input_date, user_timezone)
 
-                # Now compare user_input_date_utc with current_utc_time
-                if (user_input_date_utc - current_utc_time).total_seconds() < 1200:
-                    raise forms.ValidationError("Scheduled date must be at least 20 minutes in the future.")
+                current_time_user_timezone = timezone.now().astimezone(user_timezone)
+
+                # Perform the comparison in the user's timezone
+                if (user_input_date - current_time_user_timezone).total_seconds() < 1200:
+                    raise ValidationError("Scheduled date must be at least 20 minutes in the future.")
             except pytz.exceptions.UnknownTimeZoneError:
-                raise forms.ValidationError('Invalid timezone.')
+                raise ValidationError('Invalid timezone.')
 
-            return user_input_date_utc  # Return the UTC normalized datetime
+            # After validation, convert to UTC for storage and further processing
+            user_input_date_utc = user_input_date.astimezone(pytz.utc)
+            return user_input_date_utc
 
 
 class DuosDirectChallengeForm(forms.ModelForm):
